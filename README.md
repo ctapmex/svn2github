@@ -19,6 +19,9 @@ This is a Python3 script (tested with Python 3.5). It shells out to the followin
 
 Don't use the script on untrusted repositories. The script issues commands using input from the GitHub repository and possibly this can be exploited to run arbitrary commands on your server.
 
+## Dependence
+Install `git`, `subversion`, `git-svn`.
+
 ## Usage
 
 There are a few ways to use the script.
