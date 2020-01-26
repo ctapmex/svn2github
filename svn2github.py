@@ -19,7 +19,7 @@ GitSvnInfo = namedtuple('GitSvnInfo', 'svn_url svn_revision svn_uuid')
 
 
 def get_last_revision_from_svn(svn_url):
-    result = proc.run(["svn", "info", svn_url], check=True, stderr=DEVNULL, stdin=DEVNULL, stdout=PIPE)
+    result = proc.run(["svn", "info", svn_url], check=True, stdin=DEVNULL, stdout=PIPE)
 
     pattern = re.compile("^Revision: ([0-9]+)$".encode())
 
@@ -32,11 +32,11 @@ def get_last_revision_from_svn(svn_url):
 
 
 def run_git_cmd(args, git_dir):
-    return proc.run(["git"] + args, check=True, cwd=git_dir, stderr=DEVNULL, stdin=DEVNULL, stdout=PIPE)
+    return proc.run(["git"] + args, check=True, cwd=git_dir, stdin=DEVNULL, stdout=PIPE)
 
 
 def is_repo_empty(git_dir):
-    result = proc.run(["ls", ".git/refs/heads"], check=True, cwd=git_dir, stderr=DEVNULL, stdin=DEVNULL, stdout=PIPE)
+    result = proc.run(["ls", ".git/refs/heads"], check=True, cwd=git_dir, stdin=DEVNULL, stdout=PIPE)
     return len(result.stdout) == 0
 
 
@@ -66,8 +66,7 @@ def git_svn_rebase(git_dir):
 
 
 def git_svn_fetch(git_dir):
-    cmd = Popen(["git", "svn", "fetch"], cwd=git_dir, stdin=DEVNULL, stdout=PIPE, stderr=DEVNULL,
-                universal_newlines=True)
+    cmd = Popen(["git", "svn", "fetch"], cwd=git_dir, stdin=DEVNULL, stdout=PIPE, universal_newlines=True)
 
     pattern = re.compile("^r([0-9]+) = [0-9a-f]{40}")
 
@@ -92,14 +91,14 @@ def git_push(git_dir):
 def unpack_cache(cache_path, git_dir):
     dot_git_dir = os.path.join(git_dir, ".git")
     os.makedirs(dot_git_dir, exist_ok=False)
-    proc.run(["tar", "-xf", cache_path], check=True, cwd=dot_git_dir, stderr=DEVNULL, stdin=DEVNULL, stdout=DEVNULL)
+    proc.run(["tar", "-xf", cache_path], check=True, cwd=dot_git_dir, stdin=DEVNULL, stdout=DEVNULL)
     run_git_cmd(["config", "core.bare", "false"], git_dir)
     run_git_cmd(["checkout", "."], git_dir)
 
 
 def save_cache(cache_path, tmp_path, git_dir):
     dot_git_dir = os.path.join(git_dir, ".git")
-    proc.run(["tar", "-cf", tmp_path, "."], check=True, cwd=dot_git_dir, stderr=DEVNULL, stdin=DEVNULL, stdout=DEVNULL)
+    proc.run(["tar", "-cf", tmp_path, "."], check=True, cwd=dot_git_dir, stdin=DEVNULL, stdout=DEVNULL)
     shutil.copyfile(tmp_path, cache_path)
 
 
