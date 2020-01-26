@@ -65,7 +65,7 @@ def git_svn_rebase(git_dir):
 
 
 def git_svn_fetch(git_dir):
-    cmd = Popen(["git", "svn", "fetch"], cwd=git_dir, stdin=DEVNULL, stdout=PIPE, universal_newlines=True)
+    cmd = Popen(["git", "svn", "fetch"], cwd=git_dir, stderr=DEVNULL, stdin=DEVNULL, stdout=PIPE, universal_newlines=True)
 
     pattern = re.compile("^r([0-9]+) = [0-9a-f]{40}")
 
