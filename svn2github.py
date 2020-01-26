@@ -28,11 +28,11 @@ def get_last_revision_from_svn(svn_url):
         if m:
             return int(m.group(1))
 
-    return Svn2GithubException("svn info {} output did not specify the current revision".format(svn_url))
+    raise Svn2GithubException("svn info {} output did not specify the current revision".format(svn_url))
 
 
 def run_git_cmd(args, git_dir):
-    return proc.run(["git"] + args, check=True, cwd=git_dir, stdin=DEVNULL, stdout=PIPE)
+    return proc.run(["git"] + args, check=True, cwd=git_dir, stderr=DEVNULL, stdin=DEVNULL, stdout=PIPE)
 
 
 def is_repo_empty(git_dir):
@@ -50,7 +50,8 @@ def get_svn_info_from_git(git_dir):
         if m:
             return GitSvnInfo(svn_url=m.group(1), svn_revision=int(m.group(2)), svn_uuid=m.group(3))
 
-    return Svn2GithubException("git log -1 HEAD --pretty=%b output did not specify the current revision")
+    print(result)
+    raise Svn2GithubException("git log -1 HEAD --pretty=%b output did not specify the current revision")
 
 
 def git_svn_init(git_svn_info, git_dir):
