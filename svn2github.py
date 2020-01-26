@@ -48,7 +48,7 @@ def get_svn_info_from_git(git_dir):
     for line in result.stdout.split("\n".encode()):
         m = pattern.match(line)
         if m:
-             return GitSvnInfo(svn_url=m.group(1), svn_revision=int(m.group(2)), svn_uuid=m.group(3))
+            return GitSvnInfo(svn_url=m.group(1), svn_revision=int(m.group(2)), svn_uuid=m.group(3))
 
     return Svn2GithubException("git log -1 HEAD --pretty=%b output did not specify the current revision")
 
@@ -66,7 +66,8 @@ def git_svn_rebase(git_dir):
 
 
 def git_svn_fetch(git_dir):
-    cmd = Popen(["git", "svn", "fetch"], cwd=git_dir, stdin=DEVNULL, stdout=PIPE, stderr=DEVNULL, universal_newlines=True)
+    cmd = Popen(["git", "svn", "fetch"], cwd=git_dir, stdin=DEVNULL, stdout=PIPE, stderr=DEVNULL,
+                universal_newlines=True)
 
     pattern = re.compile("^r([0-9]+) = [0-9a-f]{40}")
 
@@ -158,7 +159,9 @@ def sync_github_mirror(github_repo, cache_dir, new_svn_url=None):
 
 def main():
     parser = argparse.ArgumentParser(description="Mirror SVN repositories to GitHub")
-    parser.add_argument("--cache-dir", help="Directory to keep the cached data to avoid re-downloading all SVN and Git history each time. This is optional, but highly recommended")
+    parser.add_argument("--cache-dir",
+                        help="Directory to keep the cached data to avoid re-downloading all SVN and Git history each "
+                             "time. This is optional, but highly recommended")
     subparsers = parser.add_subparsers()
 
     subparser_import = subparsers.add_parser("import", help="Import SVN repository to the GitHub repo")
@@ -171,7 +174,6 @@ def main():
 
     new_svn_url = args.svn_url if "svn_url" in args else None
     sync_github_mirror(args.github_repo, args.cache_dir, new_svn_url=new_svn_url)
-
 
 
 if __name__ == "__main__":
