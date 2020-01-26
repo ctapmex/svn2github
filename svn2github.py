@@ -112,7 +112,7 @@ def sync_github_mirror(github_repo, cache_dir, new_svn_url=None):
 
     github_url = "git@github.com:" + github_repo + ".git"
 
-    with tempfile.TemporaryDirectory(prefix="svn2github-") as tmp_dir:
+    with tempfile.TemporaryDirectory(prefix="svn2github-", dir=cache_dir) as tmp_dir:
         git_dir = os.path.join(tmp_dir, "repo")
         if cached and not new_svn_url:
             print("Using cached Git repository from " + cache_path)

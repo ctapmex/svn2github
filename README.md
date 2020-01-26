@@ -40,6 +40,7 @@ The second use case is mirroring a repository that used to be kept in sync by sv
 3. Bring the repo up to date with the `update` command: `python3 svn2github.py github_user/repo update`
 
 All those commands (both `import` and `update`) will re-download the whole Git and SVN history every time, unless you specify a cache directory using the `--cache-dir` option. Use an empty directory and keep the contents between the runs to significantly speed up the updates!
+If `--cache-dir` option is set then the working temporary folder created in it. Otherwise, it is created in `/tmp`.
 
 ## Help page
 
