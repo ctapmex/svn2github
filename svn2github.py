@@ -110,6 +110,7 @@ def sync_github_mirror(github_repo, cache_dir, new_svn_url=None):
         cached = os.path.exists(cache_path)
     else:
         cached = False
+        cache_path = ""
 
     github_url = "git@github.com:" + github_repo + ".git"
 
